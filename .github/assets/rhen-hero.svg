@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="480" viewBox="0 0 1440 480" role="img" aria-labelledby="title desc">
+<title id="title">Rhen language research</title>
+<desc id="desc">Rhen relation-code symbol and source text connected to structured program nodes on a precision grid.</desc>
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07131D"/><stop offset="1" stop-color="#0B141E"/></linearGradient><linearGradient id="green" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#D4FFF0"/><stop offset=".55" stop-color="#6DE5C0"/><stop offset="1" stop-color="#259F9C"/></linearGradient><pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse"><path d="M36 0H0V36" stroke="#88C5B8" stroke-width=".5" fill="none" opacity=".15"/></pattern></defs>
+<rect width="1440" height="480" fill="url(#bg)"/><rect width="1440" height="480" fill="url(#grid)"/>
+<g stroke="url(#green)" stroke-width="13" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M183 105L118 170L183 235M277 105L342 170L277 235"/><path d="M230 96V244" stroke="#F5FFF9"/></g>
+<g fill="#F2FAF7" font-family="system-ui, sans-serif"><text x="117" y="348" font-weight="700" font-size="74" letter-spacing="-3">Rhen</text><text x="119" y="388" fill="#7CCEBB" font-size="19" letter-spacing="3">LANGUAGE • RESEARCH • VERIFICATION</text></g>
+<g fill="#A5E3D6" font-family="monospace" font-size="22"><text x="552" y="152">let width = 12</text><text x="552" y="199">let height = width * 3</text><text x="552" y="246">print height</text></g>
+<g stroke="#6BBCA8" stroke-width="2" opacity=".45" fill="none"><path d="M808 148H975L1025 198H1143"/><path d="M809 244H956L1020 315H1143"/><path d="M1218 233H1301V254"/></g>
+<g fill="#102A34" stroke="#5BCBAE" stroke-width="2"><rect x="1085" y="166" width="126" height="64" rx="12"/><rect x="1085" y="279" width="126" height="64" rx="12"/><rect x="1260" y="226" width="115" height="63" rx="12"/></g>
+<g fill="#D3F7E9" font-family="monospace" font-size="18" text-anchor="middle"><text x="1148" y="205">SOURCE</text><text x="1148" y="318">AST / IR</text><text x="1318" y="264">TARGET</text></g>
+<text x="552" y="337" fill="#70ADA5" font-family="monospace" font-size="18">M0 / INSPECTABLE TRANSFORMATIONS</text><text x="1390" y="454" fill="#5A8684" font-family="monospace" text-anchor="end" font-size="14">DEVON ALAN AKINS • 2026</text>
+</svg>

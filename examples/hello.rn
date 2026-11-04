@@ -1,0 +1,4 @@
+# Rhen M0: experimental language subset.
+let width = 12
+let height = width * (2 + 1)
+print height
