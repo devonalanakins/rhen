@@ -30,10 +30,13 @@ The expected output is `72`.
 ```sh
 npm run check
 npm test
+node bin/rhen-typed.mjs examples/typed-functions.rn --target ir
 node bin/rhen-typed.mjs examples/typed-functions.rn --target eval
 node bin/rhen-typed.mjs examples/typed-functions.rn --target js | node
 node bin/rhen-typed.mjs examples/typed-functions.rn --target python | python3
 ```
+
+The `ir` target emits an independently validated, versioned and detached `rhen.typed.preview.v0` representation as JSON. `parseTypedPreviewIRJSON` provides a size-bounded, duplicate-key-rejecting ingress for machine-readable IR; `evaluateTypedPreviewIR` and `compileTypedPreviewIR` revalidate IR before use. This is an **experimental preview format, not a stable ABI, public protocol or typed CSIR**. Direct JavaScript Proxy objects remain outside the validator's trust boundary.
 
 The CLI reads local `.rn` input. `eval` calls an independent BigInt reference evaluator, while `js` and `python` **emit source text only**; the compiler itself does not run those outputs. Generated target execution must be treated separately from compiler parsing.
 

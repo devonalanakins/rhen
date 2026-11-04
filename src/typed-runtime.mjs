@@ -1,4 +1,5 @@
 import {parseTypedPreview} from './typed-parser.mjs';
+import {validateTypedPreviewIR} from './typed-ir.mjs';
 const MAX_CALL_DEPTH = 16;
 const MAX = BigInt(Number.MAX_SAFE_INTEGER);
 function checked(number) {
@@ -25,8 +26,8 @@ function calculate(node,program,params,globals,callDepth=0) {
   }
 }
 
-export function evaluateTypedPreview(source) {
-  const program=parseTypedPreview(source);
+export function evaluateTypedPreviewIR(input) {
+  const program=validateTypedPreviewIR(input);
   const globals=[],stdout=[];
   try {
     for(const statement of program.statements) {
@@ -41,6 +42,10 @@ export function evaluateTypedPreview(source) {
   return {version:'rhen.typed.eval.v0',stdout};
 }
 
+export function evaluateTypedPreview(source) {
+  return evaluateTypedPreviewIR(parseTypedPreview(source));
+}
+
 function emitNode(node,language,functions) {
   const checkedName='_rhen_safe';
   switch(node.kind) {
@@ -53,9 +58,9 @@ function emitNode(node,language,functions) {
   }
 }
 
-export function compileTypedPreview(source,target='js') {
+export function compileTypedPreviewIR(input,target='js') {
   if(!['js','python'].includes(target))throw new TypeError('unsupported preview target');
-  const program=parseTypedPreview(source);
+  const program=validateTypedPreviewIR(input);
   const js=target==='js';
   const lines=js
     ? ['"use strict";','const _rhen_safe = n => {if (!Number.isSafeInteger(n)) throw new RangeError("Rhen SafeInt overflow"); return n===0?0:n;};']
@@ -73,4 +78,8 @@ export function compileTypedPreview(source,target='js') {
     else lines.push(js?`console.log(${value});`:`print(${value})`);
   }
   return lines.join('\n')+'\n';
+}
+
+export function compileTypedPreview(source,target='js') {
+  return compileTypedPreviewIR(parseTypedPreview(source), target);
 }
