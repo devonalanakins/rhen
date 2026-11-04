@@ -37,7 +37,7 @@ The `eval` target interprets only the admitted M0 arithmetic and print subset an
 - Validation copies a sanitized IR tree. Foreign machine-readable input must use the size-bounded `parseIRJSON` entry point. This is not an execution sandbox against malicious JavaScript object Proxies.
 - Expression depth is bounded across all output targets, including JSON IR. This intentionally rejects some long, flat expressions the M0 parser can construct but whose original emitters could not handle.
 - Generated JavaScript normalizes negative zero to `0`, matching Python and the reference evaluator. That fixes a demonstrated M0 target discrepancy.
-- M0 `print` is treated as an observable ordered stdout trace, not a pure expression. Different target-specific stack traces are not declared equivalent.
+- M0 `print` is treated as an observable ordered stdout trace, not a pure expression. When later arithmetic traps, the reference evaluator's exception retains the earlier stdout prefix, matching the generated targets. Different target-specific stack traces are not declared equivalent.
 
 ## Test evidence and limits
 

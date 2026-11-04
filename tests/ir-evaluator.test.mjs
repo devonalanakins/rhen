@@ -218,3 +218,18 @@ test('documented schema is a structural aid, not complete semantic validation',(
   assert.equal(schema.additionalProperties,false);
   assert.equal(schema.$defs.expression.oneOf.length,4);
 });
+test('observable stdout prefix survives subsequent arithmetic trap', () => {
+  const source='print 7\nprint 9007199254740991+1';
+  let trapped;
+  try { evaluateIR(parse(source)); } catch (e) { trapped=e; }
+  assert.match(trapped?.message || '', /integer overflow/);
+  assert.deepEqual(trapped.stdout, ['7']);
+  const js=run(process.execPath,['--input-type=commonjs'],compile(source,'js'));
+  assert.notEqual(js.status,0);
+  assert.deepEqual(js.stdout.trim().split('\n'),trapped.stdout);
+  if (pythonAvailable) {
+    const py=run('python3',['-'],compile(source,'python'));
+    assert.notEqual(py.status,0);
+    assert.deepEqual(py.stdout.trim().split('\n'),trapped.stdout);
+  }
+});

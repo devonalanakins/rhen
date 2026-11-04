@@ -37,7 +37,15 @@ export function evaluateIR(input) {
   const slots = [];
   const stdout = [];
   for (const statement of ir.statements) {
-    const value = checked(evaluateExpression(statement.value, slots));
+    let value;
+    try {
+      value = checked(evaluateExpression(statement.value, slots));
+    } catch (error) {
+      // Earlier prints are already observable in emitted target programs.
+      // Preserve that trace when a later operation traps.
+      Object.defineProperty(error, 'stdout', {value: [...stdout]});
+      throw error;
+    }
     if (statement.kind === 'Let') slots.push(value);
     else if (statement.kind === 'Print') stdout.push(value.toString());
   }
