@@ -16,6 +16,7 @@ Rhen is **one** independent, open-source-intended programming-language research 
 | [0002](0002-compiler-bridge-protocol.md) | Compiler, semantic IR & Bridge | Layered representations, source provenance, typed CSIR, admitted-language subsets, compatibility reports, guarded edits |
 | [0003](0003-tooling-ecosystem-safety.md) | Developer tooling & safety | Offline CLI, reproducible packages, LSP, contributor governance, untrusted-source handling, open-source release constraints |
 | [0004](0004-validation-and-roadmap.md) | Research & staged delivery | Differential reference tests, AI/human benchmarks, falsification, implementation gates and year-end/2027 sequencing |
+| [0005](0005-ai-semantic-transport.md) | AI-native semantic transport | Semantic context selection, revision-scoped protocol, compact representation experiments, evidence receipts and authorization boundaries |
 
 ## One-system architecture
 
