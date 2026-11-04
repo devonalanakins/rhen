@@ -1,0 +1,4 @@
+# Independent Merit evidence experiment: a bounded SafeInt trace.
+print 7
+print 9007199254740991
+print 9007199254740991 + 1
