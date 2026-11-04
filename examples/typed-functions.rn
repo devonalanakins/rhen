@@ -1,0 +1,11 @@
+# Rhen typed function experiment. SafeInt is NOT the future i64 Int.
+fn area(width: SafeInt, height: SafeInt) -> SafeInt {
+    width * height
+}
+
+fn doubledArea(a: SafeInt, b: SafeInt) -> SafeInt {
+    area(a, b) * 2
+}
+
+let result = doubledArea(12, 3)
+print result
