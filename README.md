@@ -10,6 +10,10 @@
 
 > **M0 research build, not a production compiler.** This is a new independent programming-language repository, not the historical financial RHEN system (now [Vesper Legacy](https://github.com/devonalanakins/vesper-legacy)), the clean-sheet [Vesper](https://github.com/devonalanakins/vesper) finance redesign, the [Merit](https://github.com/devonalanakins/merit) integrity project, or the fictional language of the Anevum universe.
 
+## Proposed full-language design
+
+The [Rhen design RFC index](docs/rfc/README.md) links the proposed language semantics, compiler/Bridge model, offline developer tools, security boundaries, research methodology and delivery gates. **These are proposals, not current compiler functionality.** The actual M0 capabilities and limitations below remain authoritative until code is independently reviewed and merged.
+
 ## Research questions
 
 - **Human readability:** Can the language be learned, written, reviewed, and maintained manually?
