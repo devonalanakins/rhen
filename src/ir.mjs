@@ -26,6 +26,31 @@ function record(value, path, expected) {
   return Object.fromEntries(fields.map(field => [field, descs[field].value]));
 }
 
+function statementArray(value, path) {
+  if (!Array.isArray(value) || Object.getPrototypeOf(value) !== Array.prototype) {
+    invalid(path, 'expected ordinary array');
+  }
+  if (value.length > MAX_STATEMENTS) invalid(path, 'maximum statement count exceeded');
+  if (Object.getOwnPropertySymbols(value).length !== 0) {
+    invalid(path, 'symbol properties are unsupported');
+  }
+  // Arrays can contain accessor entries, holes and arbitrary extra properties.
+  // Inspect descriptors first, without invoking an element getter.
+  const descs = Object.getOwnPropertyDescriptors(value);
+  if (Object.keys(descs).length !== value.length + 1) {
+    invalid(path, 'expected dense array with no custom properties');
+  }
+  const statements = [];
+  for (let i = 0; i < value.length; i++) {
+    const desc = descs[String(i)];
+    if (!desc || !('value' in desc) || desc.enumerable !== true) {
+      invalid(path + '[' + i + ']', 'expected data element, not accessor or hole');
+    }
+    statements.push(desc.value);
+  }
+  return statements;
+}
+
 function nonnegativeSafeInteger(value, path) {
   if (!Number.isSafeInteger(value) || value < 0 || Object.is(value, -0)) invalid(path, 'expected a nonnegative safe integer');
   return value;
@@ -74,15 +99,14 @@ function recordKind(value, path) {
 export function validateIR(input) {
   const root = record(input, '$', ['version', 'statements']);
   if (root.version !== IR_VERSION) invalid('$.version', `expected ${IR_VERSION}`);
-  if (!Array.isArray(root.statements)) invalid('$.statements', 'expected array');
-  if (root.statements.length > MAX_STATEMENTS) invalid('$.statements', 'maximum statement count exceeded');
+  const statements = statementArray(root.statements, '$.statements');
   const result = [];
   const named = new Set();
   const budget = {nodes: 0};
   let nextSlot = 0;
-  for (let i = 0; i < root.statements.length; i++) {
+  for (let i = 0; i < statements.length; i++) {
     const path = `$.statements[${i}]`;
-    const node = root.statements[i];
+    const node = statements[i];
     const kind = recordKind(node, path);
     if (++budget.nodes > MAX_NODES) invalid(path, 'maximum node count exceeded');
     if (kind === 'Let') {
