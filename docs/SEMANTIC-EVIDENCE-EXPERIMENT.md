@@ -8,6 +8,8 @@ It hashes the exact UTF-8 input, a validated typed IR, and generated JS/Python a
 
 All source revision, policy and run identifiers are caller-supplied assertions, not authenticated provenance. Do not interpret this packet as proof of backend equivalence, universal language interoperability or release authorization.
 
-Run npm run check and npm test. The Merit draft integration workflow checks out pinned Rhen commit 1ccc3564b315b91f932fde3df97ab88cbb30d6cc and executes the controlled cross-project experiment. Rhen has no Merit runtime dependency.
+Run npm run check and npm test. The Merit draft integration workflow checks out pinned Rhen commit 827d5640da195d06f88321a7e0c5d386845027cc and executes the controlled cross-project experiment. Rhen has no Merit runtime dependency.
 
 Unimplemented: signed provenance, general language adapters, source maps, canonical cross-language hashing, stable checked-i64 semantics and formal correctness proofs.
+
+The first pinned experiment reads examples/merit-safeint-boundary.rn directly from that Rhen revision; the source is not attributed to an unrelated repository or uncommitted test string.
