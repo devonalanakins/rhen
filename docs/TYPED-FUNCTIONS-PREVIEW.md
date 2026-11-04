@@ -44,6 +44,7 @@ The CLI reads local `.rn` input. `eval` calls an independent BigInt reference ev
 
 - At most 65,536 UTF-16 source code units, 4,096 tokens, 48 expression nodes of depth, 64 functions, 16 parameters per function, and 16 static function-call levels. Rejects unknown identifiers, duplicate functions/parameters and unsupported constructs before emission.
 - Arithmetic uses checked safe integers in the reference evaluator and both emitted runtimes. Output printed before an arithmetic trap remains observable.
+- **Dynamic execution budget:** the evaluator and both generated targets now allow at most 25,000 evaluated expression nodes per program execution (including nested calls and across top-level statements). Exceeding this budget throws an explicit error; output already printed remains observable. This closes exponential repeated-call work that static function-call depth alone cannot bound. This is a deterministic step limit, **not** a wall-clock timeout, CPU memory limit, or host sandbox.
 - The independent test file contains 20 explicitly expected valid examples, rejected syntax and API cases, arithmetic overflow cases, output-before-trap evidence, source/parameter/depth caps and source-generation safety tests.
 - All claims are scoped to this restricted subset and actual passing tests at an exact commit. Successful output is not formal proof, a secure sandbox, a complete general-purpose language, or evidence of AI-efficiency gains.
 - There is no external AI, network dependency, financial integration, package publication or secret configuration.
