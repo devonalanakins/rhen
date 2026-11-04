@@ -1,3 +1,4 @@
+import {rejectDuplicateJSONMembers} from './json.mjs';
 // Versioned Rhen M0 IR validator. This module does not execute input code.
 export const IR_VERSION = 'rhen.ir.v0';
 const MAX_IR_BYTES = 1_048_576;
@@ -22,6 +23,7 @@ function record(value, path, expected) {
   }
   for (const field of fields) {
     if (!('value' in descs[field])) invalid(path, 'accessor properties are not permitted');
+    if (descs[field].enumerable !== true) invalid(path, 'nonenumerable record fields are not JSON-compatible');
   }
   return Object.fromEntries(fields.map(field => [field, descs[field].value]));
 }
@@ -134,5 +136,6 @@ export function validateIR(input) {
 export function parseIRJSON(json) {
   if (typeof json !== 'string') throw new TypeError('Rhen IR: expected JSON string');
   if (Buffer.byteLength(json, 'utf8') > MAX_IR_BYTES) throw new RangeError('Rhen IR: JSON byte limit exceeded');
+  rejectDuplicateJSONMembers(json);
   return validateIR(JSON.parse(json));
 }

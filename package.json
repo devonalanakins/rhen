@@ -8,6 +8,6 @@
   },
   "scripts": {
     "test": "node --test tests/*.test.mjs",
-    "check": "node --check src/compiler.mjs && node --check src/ir.mjs && node --check src/evaluator.mjs && node --check bin/rhen.mjs"
+    "check": "node --check src/compiler.mjs && node --check src/ir.mjs && node --check src/json.mjs && node --check src/evaluator.mjs && node --check bin/rhen.mjs"
   }
 }
