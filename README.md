@@ -10,6 +10,10 @@
 
 > **M0 research build, not a production compiler.** This is a new independent programming-language repository, not the historical financial RHEN system (now [Vesper Legacy](https://github.com/devonalanakins/vesper-legacy)), the clean-sheet [Vesper](https://github.com/devonalanakins/vesper) finance redesign, the [Merit](https://github.com/devonalanakins/merit) integrity project, or the fictional language of the Anevum universe.
 
+## Opt-in typed-function research preview (draft only)
+
+A separate [typed-function preview](docs/TYPED-FUNCTIONS-PREVIEW.md) is being tested on its own draft branch, **not merged into the canonical M0 parser or language specification**. It supports a bounded `SafeInt` function experiment, independent evaluation, and JavaScript/Python generation. It does not implement the proposed checked 64-bit `Int`, recursion, effects, or general TypeScript interoperability.
+
 ## Research questions
 
 - **Human readability:** Can the language be learned, written, reviewed, and maintained manually?
