@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/devonalanakins/rhen/blob/main/docs/ir/v0.schema.json",
+  "title": "Rhen M0 experimental intermediate representation",
+  "description": "Structural shape only. src/ir.mjs validates sequential slots, binding order, duplicate names, resource bounds, actual safe integers, and expression depth.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "statements"
+  ],
+  "properties": {
+    "version": {
+      "const": "rhen.ir.v0"
+    },
+    "statements": {
+      "type": "array",
+      "maxItems": 2048,
+      "items": {
+        "$ref": "#/$defs/statement"
+      }
+    }
+  },
+  "$defs": {
+    "expression": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "value"
+          ],
+          "properties": {
+            "kind": {
+              "const": "Number"
+            },
+            "value": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "slot"
+          ],
+          "properties": {
+            "kind": {
+              "const": "Read"
+            },
+            "slot": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2047
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "value"
+          ],
+          "properties": {
+            "kind": {
+              "const": "Negate"
+            },
+            "value": {
+              "$ref": "#/$defs/expression"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "op",
+            "left",
+            "right"
+          ],
+          "properties": {
+            "kind": {
+              "const": "Binary"
+            },
+            "op": {
+              "enum": [
+                "+",
+                "-",
+                "*"
+              ]
+            },
+            "left": {
+              "$ref": "#/$defs/expression"
+            },
+            "right": {
+              "$ref": "#/$defs/expression"
+            }
+          }
+        }
+      ]
+    },
+    "statement": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "slot",
+            "name",
+            "value"
+          ],
+          "properties": {
+            "kind": {
+              "const": "Let"
+            },
+            "slot": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2047
+            },
+            "name": {
+              "type": "string",
+              "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+              "not": {
+                "enum": [
+                  "let",
+                  "print"
+                ]
+              }
+            },
+            "value": {
+              "$ref": "#/$defs/expression"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "value"
+          ],
+          "properties": {
+            "kind": {
+              "const": "Print"
+            },
+            "value": {
+              "$ref": "#/$defs/expression"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

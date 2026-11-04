@@ -1,3 +1,4 @@
+import {validateIR} from './ir.mjs';
 // Rhen M0 research prototype: a deliberately narrow, deterministic frontend.
 const MAX_CHARS = 65536;
 const MAX_TOKENS = 4096;
@@ -142,12 +143,12 @@ function emitExpression(value, depth = 0) {
 
 export function compile(source, target = 'ir') {
   if (!['ir', 'js', 'python'].includes(target)) throw new TypeError('unknown output target');
-  const ir = parse(source);
+  const ir = validateIR(parse(source));
   if (target === 'ir') return `${JSON.stringify(ir, null, 2)}
 `;
   const js = target === 'js';
   const lines = js
-    ? ['"use strict";', 'const _rhen_safe = (n) => { if (!Number.isSafeInteger(n)) throw new RangeError("Rhen M0 integer overflow"); return n; };']
+    ? ['"use strict";', 'const _rhen_safe = (n) => { if (!Number.isSafeInteger(n)) throw new RangeError("Rhen M0 integer overflow"); return n === 0 ? 0 : n; };']
     : ['def _rhen_safe(n):', '    if not isinstance(n, int) or not -(2 ** 53 - 1) <= n <= (2 ** 53 - 1):', '        raise OverflowError("Rhen M0 integer overflow")', '    return n'];
   for (const statement of ir.statements) {
     const rendered = `_rhen_safe(${emitExpression(statement.value)})`;
