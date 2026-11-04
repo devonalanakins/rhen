@@ -3,8 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { compile } from '../src/compiler.mjs';
 
 function usage() {
-  return 'Usage: node bin/rhen.mjs <file.rn> --target ir|js|python
-';
+  return 'Usage: node bin/rhen.mjs <file.rn> --target ir|js|python\n';
 }
 
 async function main(args) {

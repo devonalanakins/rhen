@@ -20,17 +20,13 @@ export function tokenize(source) {
   };
   while (index < source.length) {
     const char = source[index];
-    if (char === ' ' || char === '	') { index++; column++; continue; }
-    if (char === '' || char === '
-') {
-      if (char === '' && source[index + 1] === '
-') index++;
-      push('newline', '
-'); index++; line++; column = 1; continue;
+    if (char === ' ' || char === '\t') { index++; column++; continue; }
+    if (char === '\r' || char === '\n') {
+      if (char === '\r' && source[index + 1] === '\n') index++;
+      push('newline', '\n'); index++; line++; column = 1; continue;
     }
     if (char === '#') {
-      while (index < source.length && source[index] !== '
-' && source[index] !== '') { index++; column++; }
+      while (index < source.length && source[index] !== '\n' && source[index] !== '\r') { index++; column++; }
       continue;
     }
     if (/[0-9]/.test(char)) {
@@ -159,7 +155,5 @@ export function compile(source, target = 'ir') {
     else if (statement.kind === 'Print') lines.push(js ? `console.log(${rendered});` : `print(${rendered})`);
     else throw new TypeError('unknown IR statement kind');
   }
-  return lines.join('
-') + '
-';
+  return lines.join('\n') + '\n';
 }

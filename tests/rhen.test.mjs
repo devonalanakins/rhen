@@ -3,10 +3,7 @@ import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { parse, tokenize, compile } from '../src/compiler.mjs';
 
-const example = 'let width = 12
-let height = width * (2 + 1)
-print height
-';
+const example = 'let width = 12\nlet height = width * (2 + 1)\nprint height\n';
 const run = (bin, args, input) => spawnSync(bin, args, { input, encoding: 'utf8' });
 
 test('portable IR has stable version and source order', () => {
@@ -32,10 +29,7 @@ test('Python generated code executes with same result when python3 is available'
 });
 
 test('comments and CRLF preserve statement separation', () => {
-  const ast = parse('# note
-let x = 2
-print x # safe
-');
+  const ast = parse('# note\r\nlet x = 2\r\nprint x # safe\r\n');
   assert.equal(ast.statements.length, 2);
   assert.equal(ast.statements[1].value.slot, 0);
 });
@@ -47,8 +41,7 @@ test('empty source is valid and does not execute user input', () => {
 test('unbound and duplicate variables fail closed', () => {
   assert.throws(() => parse('print missing'), /unknown name/);
   assert.throws(() => parse('let x = x'), /unknown name/);
-  assert.throws(() => parse('let x = 1
-let x = 2'), /duplicate name/);
+  assert.throws(() => parse('let x = 1\nlet x = 2'), /duplicate name/);
 });
 
 test('reject non-M0 expressions and code injection', () => {
@@ -75,14 +68,11 @@ test('bounded source and nesting reject adversarial inputs', () => {
   assert.throws(() => tokenize(' '.repeat(65537)), /source limit/);
   assert.throws(() => parse('print ' + '('.repeat(50) + '1' + ')'.repeat(50)), /expression depth/);
   assert.throws(() => parse('print ' + '-'.repeat(200) + '1'), /expression depth/);
-  assert.throws(() => parse('print 1
-'.repeat(2500)), /token limit/);
+  assert.throws(() => parse('print 1\n'.repeat(2500)), /token limit/);
 });
 
 test('reserved and odd identifier names are isolated from target identifiers', () => {
-  const source = 'let class = 3
-let __proto__ = class + 2
-print __proto__';
+  const source = 'let class = 3\nlet __proto__ = class + 2\nprint __proto__';
   const js = run(process.execPath, ['--input-type=commonjs'], compile(source, 'js'));
   assert.equal(js.status, 0, js.stderr);
   assert.equal(js.stdout.trim(), '5');
